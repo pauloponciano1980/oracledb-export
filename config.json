@@ -1,0 +1,10 @@
+{
+    "connections": [
+        {
+            "poolAlias": "default",
+            "connectString": "localhost:1521/xe",
+            "user": "myapp",
+            "password": "welcome1"
+        }
+    ]
+}

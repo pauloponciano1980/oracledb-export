@@ -1,0 +1,20 @@
+{
+  "name": "orclutil",
+  "version": "1.0.0",
+  "description": "Data Acess Layer for oracledb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js %*"
+  },
+  "author": "Paulo Ponciano",
+  "license": "ISC",
+  "dependencies": {
+    "argparse": "^1.0.10",
+    "async-ejs": "^0.1.6",
+    "ejs": "^2.6.1",
+    "jsonpath": "^1.0.0",
+    "oracledb": "^3.0.1",
+    "progress": "^2.0.3"
+  }
+}
