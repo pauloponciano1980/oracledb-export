@@ -265,11 +265,11 @@ let service =
 		const remapSchema = {"MYNODEAPP": "CUPCAKE"}
 		let forwardController = new ForwardController();
 		forwardController
-		.config("connection", connection)
+		
 		.config("remapSchema", remapSchema)
 		.config("base_path", base_path)
 		.config("lstObjects", revObjects)
-		.config("metadataService", new MetadataService(forwardController.config("connection"), forwardController.config("remapSchema")))
+		.config("metadataService", new MetadataService(connection, forwardController.config("remapSchema")))
 		.state("SEQUENCE",
 		{
 			forwardPath: "/<%=logicalSchema%>/01_Sequences/<%-name%>.sql",
