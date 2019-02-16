@@ -9,29 +9,29 @@ const ejs = require("ejs");
 const path = require("path");
 
 // Root Directory
-const __rootdirname = path.join( __dirname, ".." )
+const __rootdir = path.join( __dirname, ".." )
 
-const MetadataService = require(`${__rootdirname}/components/MetadataService`);
-const ForwardController = require(`${__rootdirname}/components/ForwardController`);
-const {AppConfig, SchemasConfig, SchemaConfig, ConnectionsConfig, ConnectionConfig} = require(`${__rootdirname}/components/AppConfig`);
-const parser = require(`${__rootdirname}/components/parser`)
-const HashMap = require(`${__rootdirname}/components/HashMap`)
-const Resolvable = require(`${__rootdirname}/components/Resolvable`)
-const ReverseState = require(`${__rootdirname}/components/ReverseState`);
+const MetadataService = require(`${__rootdir}/components/MetadataService`);
+const ForwardController = require(`${__rootdir}/components/ForwardController`);
+const {AppConfig, SchemasConfig, SchemaConfig, ConnectionsConfig, ConnectionConfig} = require(`${__rootdir}/components/AppConfig`);
+const parser = require(`${__rootdir}/components/parser`)
+const HashMap = require(`${__rootdir}/components/HashMap`)
+const Resolvable = require(`${__rootdir}/components/Resolvable`)
+const ReverseState = require(`${__rootdir}/components/ReverseState`);
 
 // Data Access Objects
-const AllTablesDao = require(`${__rootdirname}/dao/AllTablesDao`);
-const AllSequencesDao = require(`${__rootdirname}/dao/AllSequencesDao.js`);
-const AllViewsDao = require(`${__rootdirname}/dao/AllViewsDao.js`);
-const AllTypesDao = require(`${__rootdirname}/dao/AllTypesDao.js`);
-const AllMviewsDao = require(`${__rootdirname}/dao/AllMviewsDao.js`);
-const AllSynonymsDao = require(`${__rootdirname}/dao/AllSynonymsDao.js`);
-const AllProceduresDao = require(`${__rootdirname}/dao/AllProceduresDao.js`);
-const AllFunctionsDao = require(`${__rootdirname}/dao/AllFunctionsDao.js`);
-const AllPackageSpecsDao = require(`${__rootdirname}/dao/AllPackageSpecsDao.js`);
-const AllPackageBodysDao = require(`${__rootdirname}/dao/AllPackageBodysDao.js`);
-const AllTypeSpecsDao = require(`${__rootdirname}/dao/AllTypeSpecsDao.js`);
-const AllTypeBodysDao = require(`${__rootdirname}/dao/AllTypeBodysDao.js`);
+const AllTablesDao = require(`${__rootdir}/dao/AllTablesDao`);
+const AllSequencesDao = require(`${__rootdir}/dao/AllSequencesDao.js`);
+const AllViewsDao = require(`${__rootdir}/dao/AllViewsDao.js`);
+const AllTypesDao = require(`${__rootdir}/dao/AllTypesDao.js`);
+const AllMviewsDao = require(`${__rootdir}/dao/AllMviewsDao.js`);
+const AllSynonymsDao = require(`${__rootdir}/dao/AllSynonymsDao.js`);
+const AllProceduresDao = require(`${__rootdir}/dao/AllProceduresDao.js`);
+const AllFunctionsDao = require(`${__rootdir}/dao/AllFunctionsDao.js`);
+const AllPackageSpecsDao = require(`${__rootdir}/dao/AllPackageSpecsDao.js`);
+const AllPackageBodysDao = require(`${__rootdir}/dao/AllPackageBodysDao.js`);
+const AllTypeSpecsDao = require(`${__rootdir}/dao/AllTypeSpecsDao.js`);
+const AllTypeBodysDao = require(`${__rootdir}/dao/AllTypeBodysDao.js`);
 
 
 const rvOptions =
@@ -119,8 +119,8 @@ class ReverseMap extends HashMap(ReverseState)
 	{
 		let allMaps = await this.mapAsync(async (state,stateKey)=>
 		{
-			let inst = state.precondition.prepare().params(["rvOptions", "schemaConfig"]).exec(rvOptions, schema);
-			if(!inst) return [];
+			//let inst = state.precondition.prepare().params(["rvOptions", "schemaConfig"]).exec(rvOptions, schema);
+			//if(!inst) return [];
 			let filterKey = state.filterKey;
 			let logicalSchema = schema.logicalName;
 			let fltObj = schema.filter[filterKey];
@@ -153,91 +153,91 @@ class ForwardMap extends HashMap(Resolvable)
 		.item("SEQUENCE",
 		{
 			forwardPath: "/<%=logicalSchema%>/01_Sequences/<%-name%>.sql",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getSequenceDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("TABLE",
 		{
 			forwardPath: "/<%=logicalSchema%>/02_Tabelas/<%-name%>.sql",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getTableDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("DATA",
 		{
 			forwardPath: "/<%=logicalSchema%>/04_Inserts/<%-name%>.sql",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ data: ["owner", "name", (owner, name)=> {return this.metadataService.getData({owner, name}, this.remapSchema)}]},
 		})
 		.item("INDEX",
 		{
 			forwardPath: "/<%=logicalSchema%>/05_Indices/<%-name%>.sql",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getIndexDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("FOREIGN_KEY",
 		{
 			forwardPath: "/<%=logicalSchema%>/05_Indices/<%-tableName%>.sql",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getForeignKeyDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("VIEW",
 		{
 			forwardPath: "/<%=logicalSchema%>/06_Views/<%-name%>.sql",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getViewDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("MATERIALIZED_VIEW",
 		{
 			forwardPath: "/<%=logicalSchema%>/07_Materialized_Views/<%-name%>.sql",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getMviewDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("TYPE_SPECIFICATION",
 		{
 			forwardPath: "/<%=logicalSchema%>/08_Types/<%-name%>.tps",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getTypeSpecDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("TYPE_BODY",
 		{
 			forwardPath: "/<%=logicalSchema%>/08_Types/<%-name%>.tpb",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getTypeBodyDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("PROCEDURE",
 		{
 			forwardPath: "/<%=logicalSchema%>/09_Programaveis/<%-name%>.prc",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getProcedureDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("FUNCTION",
 		{
 			forwardPath: "/<%=logicalSchema%>/09_Programaveis/<%-name%>.fnc",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getFunctionDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("PACKAGE_SPECIFICATION",
 		{
 			forwardPath: "/<%=logicalSchema%>/09_Programaveis/<%-name%>.pks",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getPackageSpecDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("PACKAGE_BODY",
 		{
 			forwardPath: "/<%=logicalSchema%>/09_Programaveis/<%-name%>.pkb",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getPackageBodyDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("TRIGGER",
 		{
 			forwardPath: "/<%=logicalSchema%>/09_Programaveis/<%-name%>.trg",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getTriggerDDL({owner, name}, this.remapSchema)}]},
 		})
 		.item("SYNONYM",
 		{
 			forwardPath: "/<%=logicalSchema%>/10_Sinonimos/<%-name%>.trg",
-			templatePath: `${__rootdirname}/templates/module.ejs`,
+			templatePath: `${__rootdir}/templates/module.ejs`,
 			resolve:{ ddl: ["owner", "name", (owner, name)=> {return this.metadataService.getSynonymDDL({owner, name}, this.remapSchema)}]},
 		});
 	}
@@ -291,14 +291,8 @@ function loadConfig(args)
 	{
 		schema = (typeof appConfig.schemas[args.schema] === "undefined" || appConfig.schemas[args.schema]==null)? appConfig.schemas.add(args.schema, new SchemaConfig()): appConfig.schemas[args.schema];
 	}
-	if(args.remap)
-	{
-		schema.remap = args.remap;
-	}
-	if(args.logicalName)
-	{
-		schema.logicalName = args.logicalName;
-	}
+	if(args.remap) schema.remap = args.remap;
+	if(args.logicalName) schema.logicalName = args.logicalName;
 	if(args.add)
 	{
 		args.add.forEach((paramFilter)=>{schema.setFilter(paramFilter, true)})

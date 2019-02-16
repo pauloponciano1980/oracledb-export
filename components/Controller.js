@@ -4,7 +4,7 @@ class Controller
 	{
 		let myarr = Array.from(param)
 		this.action = myarr.pop();
-		this.injectKeys = myarr;
+		this.$inject = myarr;
 	}
 	
 	prepare()
@@ -29,7 +29,7 @@ class ControllerInstance
 		
 		if(typeof arguments[0] === "object")
 		{
-			this.controller.injectKeys.forEach((key)=>
+			this.controller.$inject.forEach((key)=>
 			{
 				//console.log("key", key)
 				this.values[key] = obj[key];
