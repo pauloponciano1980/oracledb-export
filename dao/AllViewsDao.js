@@ -1,5 +1,6 @@
+"use strict";
 const oracledb = require("oracledb");
-var OrclUtil = require("./OrclUtil");
+const OrclUtil = require("../components/OrclUtil");
 
 module.exports =
 function(connection)
@@ -14,7 +15,7 @@ function(connection)
 		columns:
 		{
 			"owner": "avw.owner",
-			"viewName": "avw.view_name",
+			"name": "avw.view_name",
 			"textLength": "avw.text_length",
 			"text": "avw.text",
 			"typeTextLength": "avw.type_text_length",
@@ -35,9 +36,9 @@ function(connection)
 		dynamicFilters:
 		{
 			"owner": OrclUtil.filterEqual(["owner"]),
-			"viewName": OrclUtil.filterEqual(["viewName"]),
-			"viewNameLike": OrclUtil.filterLike(["viewName"]),
-			"viewNameNotLike": OrclUtil.filterNotLike(["viewName"]),
+			"name": OrclUtil.filterEqual(["name"]),
+			"nameLike": OrclUtil.filterLike(["name"]),
+			"nameNotLike": OrclUtil.filterNotLike(["name"]),
 		}
 	};
 

@@ -1,6 +1,6 @@
+"use strict";
 const oracledb = require("oracledb");
-var OrclUtil = require("./OrclUtil");
-
+var OrclUtil = require("../components/OrclUtil");
 
 module.exports =
 function(connection)

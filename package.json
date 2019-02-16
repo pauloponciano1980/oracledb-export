@@ -6,7 +6,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pauloponciano1980/oracledb-export.git"
-  },,
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js %*"
@@ -18,6 +18,8 @@
     "ejs": "^2.6.1",
     "jsonpath": "^1.0.0",
     "oracledb": "^3.0.1",
-    "progress": "^2.0.3"
+    "progress": "^2.0.3",
+    "readline-sync": "^1.4.9",
+    "yaml": "^1.3.2"
   }
 }

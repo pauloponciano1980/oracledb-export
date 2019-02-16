@@ -1,5 +1,6 @@
+"use strict";
 const oracledb = require("oracledb");
-var OrclUtil = require("./OrclUtil");
+const OrclUtil = require("../components/OrclUtil");
 
 
 module.exports =
@@ -14,8 +15,8 @@ function(connection)
 	{
 		columns:
 		{
-			"sequenceOwner": "asq.sequence_owner",
-			"sequenceName" : "asq.sequence_name",
+			"owner": "asq.sequence_owner",
+			"name" : "asq.sequence_name",
 			"minValue" : "asq.min_value",
 			"maxValue" : "asq.max_value",
 			"incrementBy" : "asq.increment_by",
@@ -31,9 +32,9 @@ function(connection)
 		where: [],
 		dynamicFilters:
 		{
-			"sequenceOwner": OrclUtil.filterEqual(["sequenceOwner"]),
-			"sequenceNameLike": OrclUtil.filterLike(["sequenceName"]),
-			"sequenceNameNotLike": OrclUtil.filterNotLike(["sequenceName"])
+			"owner": OrclUtil.filterEqual(["owner"]),
+			"nameLike": OrclUtil.filterLike(["name"]),
+			"nameNotLike": OrclUtil.filterNotLike(["name"])
 		}
 	};
 

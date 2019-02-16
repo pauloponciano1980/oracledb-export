@@ -1,11 +1,6 @@
-//		daoStatement += 'select\r\n';
-//		daoStatement += 'owner "owner",\r\n';
-//		daoStatement += 'table_name "tableName"\r\n';
-//		daoStatement += 'from\r\n';
-//		daoStatement += 'all_tables\r\n';
-
+"use strict";
 const oracledb = require("oracledb");
-var OrclUtil = require("./OrclUtil");
+const OrclUtil = require("../components/OrclUtil");
 
 
 module.exports =
@@ -21,7 +16,7 @@ function(connection)
 		columns:
 		{
 			"owner": "atb.owner",
-			"tableName" : "atb.table_name",
+			"name" : "atb.table_name",
 		},
 		sources:
 		{
@@ -31,9 +26,9 @@ function(connection)
 		dynamicFilters:
 		{
 			"owner": OrclUtil.filterEqual(["owner"]),
-			"tableName": OrclUtil.filterEqual(["tableName"]),
-			"tableNameLike": OrclUtil.filterLike(["tableName"]),
-			"tableNameNotLike": OrclUtil.filterNotLike(["tableName"])
+			"name": OrclUtil.filterEqual(["name"]),
+			"nameLike": OrclUtil.filterLike(["name"]),
+			"nameNotLike": OrclUtil.filterNotLike(["name"])
 		}
 	};
 

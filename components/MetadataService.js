@@ -1,16 +1,16 @@
- const DbmsMetadataDao = require("../dao/DbmsMetadataDao.js");
+"use strict"
+const DbmsMetadataDao = require("../dao/DbmsMetadataDao.js");
 
- 
-function MetadataService(connection, remapSchema)
+function MetadataService(connection)
 {
 	this._connection = connection;	
-	this._remapSchema = remapSchema;	
 	
-	this.getData = async function getData(obj)
+
+	this.getData = async function getData(obj, remapSchema)
 	{
 		return "CREATE DATA "+ obj.owner + "." + obj.name+"";
 	};	
-	this.getSequenceDDL =  async function getSequenceDDL(obj)
+	this.getSequenceDDL =  async function getSequenceDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -23,18 +23,18 @@ function MetadataService(connection, remapSchema)
 			"NETWORK_LINK": "",
 			"SQLTERMINATOR": true
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getIndexDDL =  async function getIndexDDL(obj)
+	this.getIndexDDL =  async function getIndexDDL(obj, remapSchema)
 	{
 		return "CREATE INDEX "+ obj.owner + "." + obj.name+"";
 	};
-	this.getForeignKeyDDL =  async function getForeignKeyDDL(obj)
+	this.getForeignKeyDDL =  async function getForeignKeyDDL(obj, remapSchema)
 	{
 		return "CREATE FOREIGNKEY "+ obj.owner + "." + obj.name+"";
 	};
-	this.getViewDDL =  async function getViewDDL(obj)
+	this.getViewDDL =  async function getViewDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -48,10 +48,10 @@ function MetadataService(connection, remapSchema)
 			"SQLTERMINATOR": true,
 			"FORCE": false
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getMviewDDL =  async function getData(obj)
+	this.getMviewDDL =  async function getData(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -64,11 +64,11 @@ function MetadataService(connection, remapSchema)
 			"NETWORK_LINK": "",
 			"SQLTERMINATOR": true,
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
 	
-	this.getProcedureDDL =  async function getProcedureDDL(obj)
+	this.getProcedureDDL =  async function getProcedureDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -81,10 +81,10 @@ function MetadataService(connection, remapSchema)
 			"NETWORK_LINK": "",
 			"SQLTERMINATOR": true
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getFunctionDDL =  async function getFunctionDDL(obj)
+	this.getFunctionDDL =  async function getFunctionDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -97,10 +97,10 @@ function MetadataService(connection, remapSchema)
 			"NETWORK_LINK": "",
 			"SQLTERMINATOR": true
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getTypeSpecDDL =  async function getTypeSpecDDL(obj)
+	this.getTypeSpecDDL =  async function getTypeSpecDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -116,10 +116,10 @@ function MetadataService(connection, remapSchema)
 			"OID": false,
 			"SPECIFICATION": true,
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getTypeBodyDDL =  async function getTypeBodyDDL(obj)
+	this.getTypeBodyDDL =  async function getTypeBodyDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -135,10 +135,10 @@ function MetadataService(connection, remapSchema)
 			"OID": false,
 			"SPECIFICATION": false,
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getPackageSpecDDL = async function getPackageSpecDDL(obj)
+	this.getPackageSpecDDL = async function getPackageSpecDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -153,10 +153,10 @@ function MetadataService(connection, remapSchema)
 			"BODY": false,
 			"SPECIFICATION": true,
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getPackageBodyDDL =  async function getPackageBodyDDL(obj)
+	this.getPackageBodyDDL =  async function getPackageBodyDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -171,10 +171,10 @@ function MetadataService(connection, remapSchema)
 			"BODY": true,
 			"SPECIFICATION": false,
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getTriggerDDL =  async function getTriggerDDL(obj)
+	this.getTriggerDDL =  async function getTriggerDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -187,10 +187,10 @@ function MetadataService(connection, remapSchema)
 			"NETWORK_LINK": "",
 			"SQLTERMINATOR": true
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getSynonymDDL =  async function getSynonymDDL(obj)
+	this.getSynonymDDL =  async function getSynonymDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -203,10 +203,10 @@ function MetadataService(connection, remapSchema)
 			"NETWORK_LINK": "",
 			"SQLTERMINATOR": true
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
-	this.getTableDDL = async function getTableDDL(obj)
+	this.getTableDDL = async function getTableDDL(obj, remapSchema)
 	{
 		let dbmsMetadataDao = new DbmsMetadataDao(this._connection);
 		const params = 
@@ -222,7 +222,7 @@ function MetadataService(connection, remapSchema)
 			"SIZE_BYTE_KEYWORD": true,
 			"CONSTRAINTS_AS_ALTER": true
 		};
-		let ddl = await dbmsMetadataDao.getDDL(params, this._remapSchema);
+		let ddl = await dbmsMetadataDao.getDDL(params, remapSchema);
 		return ddl;
 	};
 };

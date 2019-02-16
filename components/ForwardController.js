@@ -1,6 +1,6 @@
 "use strict"
 var util = require('util');
-const MetadataService = require("./services/MetadataService")
+const MetadataService = require("./MetadataService")
 const fs = require('fs');
 const ejs = require('ejs');
 const path = require('path');
@@ -34,13 +34,11 @@ function ForwardController(connection, remapSchema, base_path, lstObjects)
 		}
 	};	
 
-	this.execute = async function execute()
+	this.execute = async function execute(lstObjects, base_path)
 	{
-		
-		
-		for(let iObject=0; iObject < this._config.lstObjects.length; iObject++)
+		for(let iObject=0; iObject < lstObjects.length; iObject++)
 		{
-			let itemObject = this._config.lstObjects[iObject];
+			let itemObject = lstObjects[iObject];
 			let instParams = {};
 			instParams["logicalSchema"] = itemObject.logicalSchema;
 			instParams["owner"] = itemObject.owner;
@@ -94,11 +92,14 @@ function ForwardController(connection, remapSchema, base_path, lstObjects)
 			if(typeof state.forwardPath === "undefined") throw new Error("forwardPath === 'undefined'");
 			let filename = ejs.render(state.forwardPath, instParams);
 			let content = ejs.render(state.contentTemplate, instParams);	
-			let fullpath = path.join(this.config("base_path"), filename);
+			//console.log("filename", filename)
+			//console.log("base_path", base_path)
+			let fullpath = path.join(base_path, filename);
+			
 			let dir = path.dirname(fullpath);
 			if (!fs.existsSync(dir)){fs.mkdirSync(dir, { recursive: true });}
 			fs.writeFileSync(fullpath , content);
-			console.log(fullpath);
+			//console.log(fullpath);
 		}
 	}
 };

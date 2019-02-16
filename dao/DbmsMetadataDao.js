@@ -1,4 +1,11 @@
- const oracledb = require("oracledb");
+"use strict";
+const oracledb = require("oracledb");
+const OrclUtil = require("../components/OrclUtil");
+
+const util = require("util")
+const stream = require('stream');
+const finished = util.promisify(stream.finished);
+
  function DbmsMetadataDao(connection)
 {
 
@@ -54,7 +61,12 @@
 		daoStatement += "h := DBMS_METADATA.OPEN(:OBJECT_TYPE, :VERSION, :MODEL, :NETWORK_LINK); \r\n";
 		daoStatement += "modify_handle := DBMS_METADATA.ADD_TRANSFORM(h, 'MODIFY'); \r\n";
 		daoStatement += "ddl_handle := DBMS_METADATA.ADD_TRANSFORM(h, 'DDL'); \r\n";
-		daoStatement += "DBMS_METADATA.SET_REMAP_PARAM(modify_handle,'REMAP_SCHEMA','MYNODEAPP','CUPCAKE'); \r\n";
+		Object.keys(remapSchema).forEach((key)=>
+		{
+			daoStatement += `DBMS_METADATA.SET_REMAP_PARAM(modify_handle,'REMAP_SCHEMA','${key}','${remapSchema[key]}'); \r\n`;
+		})
+		
+		
 		daoStatement += "dbms_metadata.set_filter(h, 'SCHEMA', :OWNER); \r\n";
 		daoStatement += "DBMS_METADATA.SET_FILTER(h, 'NAME', :NAME); \r\n";
 
@@ -88,7 +100,7 @@
 		daoStatement += "end; \r\n";
 
 		let daoOptions = {};
-
+		//console.log(daoStatement, daoParameters, daoOptions)
 		try
 		{
 			let res = await this._connection.execute(daoStatement, daoParameters, daoOptions);
@@ -105,7 +117,7 @@
 
 	function readBuffer(buffer)
 	{
-		//if( buffer ===null) return null;
+		if( buffer ===null) return null;
 		return new Promise((resolve, reject)=>
 		{
 			let mydata =""

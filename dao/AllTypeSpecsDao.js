@@ -14,23 +14,33 @@ function(connection)
 	{
 		columns:
 		{
-			"owner": "asy.owner",
-			"name": "asy.synonym_name",
-			"tableOwner": "asy.table_owner",
-			"tableName": "asy.table_name",
-			"dbLink": "asy.db_link",
+			"owner": "aob.owner",
+			"name": "aob.object_name",
+			//"subobjectName": "aob.subobject_name",
+			//"objectId": "aob.object_id",
+			//"dataObjectId": "aob.data_object_id",
+			//"created": "aob.created",
+			//"lastDdlTime": "aob.last_ddl_time",
+			//"timestamp": "aob.timestamp",
+			//"status": "aob.status",
+			//"temporary": "aob.temporary",
+			//"generated": "aob.generated",
+			//"secondary": "aob.secondary",
+			//"namespace": "aob.namespace",
+			//"editionName": "aob.edition_name",
 		},
 		sources:
 		{
-			"asy": "all_synonyms"
+			"aob": "ALL_OBJECTS",
 		},
-		where: [],
+		where: ["aob.object_type = 'TYPE'"],
 		dynamicFilters:
 		{
 			"owner": OrclUtil.filterEqual(["owner"]),
 			"name": OrclUtil.filterEqual(["name"]),
 			"nameLike": OrclUtil.filterLike(["name"]),
 			"nameNotLike": OrclUtil.filterNotLike(["name"]),
+			"objectType": OrclUtil.filterEqual(["objectType"])
 		}
 	};
 
